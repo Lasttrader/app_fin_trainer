@@ -20,11 +20,19 @@ class Author(models.Model):
 
         self.ratingAuthor = (pRating + cRat) / 2 #изменил формулу
         self.save()
-
+    
+    def __str__(self):
+        return self.authorUser.username
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True) #ctagory name
+    
+    def __str__(self):
+        return self.name
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name = 'Категории'
 
 class Post(models.Model): #post
     author = models.ForeignKey(Author,on_delete=models.CASCADE)
@@ -45,6 +53,7 @@ class Post(models.Model): #post
     postText = models.TextField() 
     postRating = models.SmallIntegerField(default=0) #rating из класса автор
 
+
     #методы после создания атрибутов, можно приступить к описанию методов
     def like(self):
         self.postRating += 1
@@ -57,11 +66,12 @@ class Post(models.Model): #post
     def preview(self):
         return f'{self.postText[0:256]}{" ..."}' #форматирование лучший вариант нежели просто конкатенация
 
+    def __str__(self):
+        return self.postTitle
 
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete = models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete = models.CASCADE)
-
 
 class Comment(models.Model):
     commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
