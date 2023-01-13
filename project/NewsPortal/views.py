@@ -7,7 +7,11 @@ from NewsPortal.models import Post, Author
 def index(request):
     return HttpResponse('Hello_news')
 
-
+#список новостей
 def getNews(request):
-    post = Post.objects.all()
-    return render(request, 'news_list.html', context = {'posts': post}) 
+    posts = Post.objects.order_by('-dateCreation')
+    return render(request, 'newslist.html', context = {'posts': posts}) 
+
+def post(request, slug):
+    post = Post.objects.get(slug__iexact = slug)
+    return render(request, 'postDetail.html', context = {'post': post})

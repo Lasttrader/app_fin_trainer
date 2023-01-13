@@ -4,10 +4,10 @@
 
 {{ flatpage.content }}
 {% block content %}
-{% for post in posts %}
-    <p>{{ post.postTitle }} : {{post.dateCreation}}<p>
-    <p>{{ post.preview}}</p>    
 
-{% endfor %}
+<p>{{ post.postTitle }} : {{post.dateCreation}}<p></p>
+<p>{{ post.postText}} </p>
+
+
 {{ flatpage.content }}
 {% endblock content %}

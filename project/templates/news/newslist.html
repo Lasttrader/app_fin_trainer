@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+{% block title %}
+{% endblock title %}
+
+{{ flatpage.content }}
+{% block content %}
+
+{% for post in posts %}
+    <p>{{ post.postTitle }} : {{post.dateCreation}}<p>
+    <p>{{ post.preview}}    </p>
+    <a href ="{{post.get_absolute_url }}"> Читать далее</a>
+
+{% endfor %}
+{{ flatpage.content }}
+{% endblock content %}

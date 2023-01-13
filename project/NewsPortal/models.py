@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.shortcuts import reverse
 
 # Create your models here.
 
@@ -52,6 +53,10 @@ class Post(models.Model): #post
     postTitle = models.CharField(max_length = 255)
     postText = models.TextField() 
     postRating = models.SmallIntegerField(default=0) #rating из класса автор
+    slug = models.SlugField(max_length=128, unique=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('postDetail', kwargs = {'slug' : self.slug})
 
 
     #методы после создания атрибутов, можно приступить к описанию методов
@@ -64,7 +69,7 @@ class Post(models.Model): #post
         self.save()
 
     def preview(self):
-        return f'{self.postText[0:256]}{" ..."}' #форматирование лучший вариант нежели просто конкатенация
+        return f'{self.postText[0:100]}{" ..."}' #форматирование лучший вариант нежели просто конкатенация
 
     def __str__(self):
         return self.postTitle
