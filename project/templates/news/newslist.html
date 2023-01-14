@@ -1,15 +1,17 @@
 {% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
 {% block title %}
 {% endblock title %}
 
-{{ flatpage.content }}
+
 {% block content %}
 
-{% for post in posts %}
-    <p>{{ post.postTitle }} : {{post.dateCreation}}<p>
-    <p>{{ post.preview}}    </p>
-    <a href ="{{post.get_absolute_url }}"> Читать далее</a>
-
-{% endfor %}
-{{ flatpage.content }}
+    {% for post in posts %}
+        <p>{{ post.postTitle|censor }} : {{post.dateCreation|date:'d M Y'}}<p>
+        <p>{{ post.preview|censor}}    </p>
+        <a href ="{{post.get_absolute_url }}"> Читать далее</a>
+    {% endfor %}
+    
 {% endblock content %}

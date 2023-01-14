@@ -56,7 +56,7 @@ class Post(models.Model): #post
     slug = models.SlugField(max_length=128, unique=True, null=True)
 
     def get_absolute_url(self):
-        return reverse('postDetail', kwargs = {'slug' : self.slug})
+        return reverse('postDetail', kwargs = {'pk' : self.pk})
 
 
     #методы после создания атрибутов, можно приступить к описанию методов
