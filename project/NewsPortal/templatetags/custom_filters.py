@@ -18,3 +18,5 @@ def censor(token):
     pat = re.compile("|".join(re.escape(w) for w in forbidden_words), flags=re.I)
     # Возвращаемое функцией значение подставится в шаблон.
     return pat.sub(lambda g: "*" * len(g.group(0)), token)
+
+
