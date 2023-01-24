@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.admin', # поддержка авторизации
+    'django.contrib.auth', #доступ к view только для зарегистрированных пользователей
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -43,6 +43,12 @@ INSTALLED_APPS = [
     'fpages',
     'NewsPortal',
     'django_filters',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.yandex',
+
 ]
 
 SITE_ID = 1
@@ -133,3 +139,19 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+LOGIN_REDIRECT_URL = "/news/newslist/"
+
+
+# Этого раздела может не быть, добавьте его в указанном виде.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', #реализующий аутентификацию по username;
+    'allauth.account.auth_backends.AuthenticationBackend', # бэкенд аутентификации, предоставленный пакетом
+]
+
+#
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'

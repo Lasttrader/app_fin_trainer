@@ -18,7 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pages/', include('django.contrib.flatpages.urls')),
-    path('news/', include('NewsPortal.urls'))
+    path("accounts/", include("allauth.urls")),  # Оставили только allauth
+    path('pages/', include('django.contrib.flatpages.urls')), #это статичные страницы
+    path('news/', include('NewsPortal.urls')) #это страницы с приложения
 
 ]

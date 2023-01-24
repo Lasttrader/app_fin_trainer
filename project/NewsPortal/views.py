@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.shortcuts import render
@@ -50,8 +52,6 @@ class getNews(ListView):
        context['filterset'] = self.filterset
        return context
 
-
-
 # # def getNews(request):
 # #     posts = Post.objects.order_by('-dateCreation')
 # #     return render(request, 'newslist.html', context = {'posts': posts}) 
@@ -61,7 +61,8 @@ def post(request, pk):
     return render(request, 'postDetail.html', context = {'post': post})
 
 # Добавляем новое представление для создания новостей.
-class create_news(CreateView):
+class create_news(LoginRequiredMixin, CreateView):
+    raise_exception = True
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель товаров
