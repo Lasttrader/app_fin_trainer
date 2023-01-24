@@ -19,6 +19,11 @@ Posts
         <input type="submit" value="Найти" />
     </form
 
+    <hr>
+    {# Теперь будем проверять права #}
+    {% if perms.NewsPortal.add_post %}
+    <a href="{% url 'news_create' %}">Добавить новость или статью</a>
+    {% endif %}
 
     {% for post in Posts %}
         <p>{{ post.postTitle|censor }} : {{post.dateCreation|date:'d M Y'}}<p>
