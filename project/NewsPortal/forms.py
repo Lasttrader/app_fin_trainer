@@ -1,5 +1,6 @@
 from django import forms
-from .models import Post
+from django_filters import FilterSet, ModelMultipleChoiceFilter,DateTimeFilter
+from .models import Post, Category
 
 class PostForm(forms.ModelForm):
    class Meta:

@@ -25,15 +25,18 @@ class Author(models.Model):
     def __str__(self):
         return self.authorUser.username
 
+
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True) #ctagory name
-    
+    subscribers = models.ManyToManyField(User, related_name='categories')
+
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'Категория'
         verbose_name = 'Категории'
+
 
 class Post(models.Model): #post
     author = models.ForeignKey(Author,on_delete=models.CASCADE)
@@ -55,10 +58,12 @@ class Post(models.Model): #post
     postRating = models.SmallIntegerField(default=0) #rating из класса автор
     slug = models.SlugField(max_length=128, unique=True, null=True)
 
+    def __str__(self):
+        return f'{self.name.title()}: {self.description[:10]}'
+
     def get_absolute_url(self):
         return reverse('postDetail', kwargs = {'pk' : self.pk})
-
-
+    
     #методы после создания атрибутов, можно приступить к описанию методов
     def like(self):
         self.postRating += 1
@@ -74,9 +79,11 @@ class Post(models.Model): #post
     def __str__(self):
         return self.postTitle
 
+
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete = models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete = models.CASCADE)
+
 
 class Comment(models.Model):
     commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -94,3 +101,14 @@ class Comment(models.Model):
         self.save()
 
 
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
