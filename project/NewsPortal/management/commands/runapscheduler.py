@@ -27,7 +27,7 @@ def my_job():
             html_content = (
                 f'Новость: {text}<br>',
                 f'<a href="http://127.0.0.1{p.get_absolute_url()}">'
-                f'Ссылка на пост</a>'))
+                f'Ссылка на пост</a>')
             msg = EmailMultiAlternatives(subject = 'news', body = '', from_email = DEFAULT_FROM_EMAIL, to = [u.email])
             msg.attach_alternative(html_content, "text/html")
             msg.send()

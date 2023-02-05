@@ -16,7 +16,7 @@ from .models import Post, Category, PostCategory, Subscription
 from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
 
-
+from .tasks import news_notification
 
 # Create your views here.
 
@@ -78,6 +78,9 @@ class create_news(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'NW'
+        post.save()
+        #уведомление для подписчиков о создании новой новости через 5 сек после создания
+        news_notification.apply_async([post.pk], countdown = 1)
         return super().form_valid(form)
 
 class edit_news(PermissionRequiredMixin, UpdateView):
