@@ -18,6 +18,8 @@ from django.views.decorators.csrf import csrf_protect
 
 from .tasks import news_notification
 
+from django.views.decorators.cache import cache_page # импортируем декоратор для кэширования отдельного представления
+
 # Create your views here.
 
 def index(request):
@@ -61,6 +63,7 @@ class getNews(ListView):
 # #     posts = Post.objects.order_by('-dateCreation')
 # #     return render(request, 'newslist.html', context = {'posts': posts}) 
 
+@cache_page(300) #в аргументы к декоратору передаём количество секунд, которые хотим, чтобы страница держалась в кэше.
 def post(request, pk):
     post = Post.objects.get(pk = pk)
     return render(request, 'postDetail.html', context = {'post': post})

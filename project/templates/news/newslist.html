@@ -9,7 +9,8 @@
 Posts
 {% endblock title %}
 
-
+{% load cache %} <!-- Загружаем кэширование -->
+{% cache 300 content_block %} <!-- Кэшируем отдельный блок на 30 секунд -->
 {% block content %}
     <h1>Все новости</h1>
 
@@ -60,3 +61,4 @@ Posts
    {% endif %}
     
 {% endblock content %}
+{% endcache %}
