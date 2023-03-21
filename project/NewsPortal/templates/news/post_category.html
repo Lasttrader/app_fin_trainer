@@ -1,0 +1,24 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Category
+{% endblock title %}
+
+{% block content %}
+{% if post_category.id %}
+<h3>
+    подписаться на категорию
+    <a href="{% url 'news:category' post_category.id %}"> {{ post_category.name }} </a>
+</h3>
+{% endif %}
+{% for post in Posts %}
+{% if post %}
+<p>{{ post.postTitle }} : {{post.dateCreation|date:'d M Y'}}
+<p>
+<p>{{ post.preview}} </p>
+<a href="{% url 'news:postDetail' post.id %}"> Читать далее</a>
+{% else %}
+<h2> Нет постов в данной категории </h2>
+{% endif %}
+{% endfor %}
+{% endblock content %}

@@ -20,6 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),  # Оставили только allauth
     path('pages/', include('django.contrib.flatpages.urls')), #это статичные страницы
-    path('news/', include('NewsPortal.urls')) #это страницы с приложения
-
+    path('', include('NewsPortal.urls')) #это страницы с приложения
 ]

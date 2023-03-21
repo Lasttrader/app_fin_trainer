@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django import forms
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, resolve
+
 
 from .filters import PostFilter
 from .forms import PostForm
@@ -15,30 +16,28 @@ from .models import Post, Category, PostCategory, Subscription
 
 from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
-
-from .tasks import news_notification
-
 from django.views.decorators.cache import cache_page # импортируем декоратор для кэширования отдельного представления
+from .tasks import news_notification
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse('Hello_news')
+    return redirect('news:newslist') # имя приложения:имя ссылки
 
 
 #список новостей
-class getNews(ListView):
+class GetNews(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
     # Поле, которое будет использоваться для сортировки объектов
-    ordering = 'postTitle'
+    ordering = '-dateCreation'
     # Указываем имя шаблона, в котором будут все инструкции о том,
     # как именно пользователю должны быть показаны наши объекты
-    template_name = 'newslist.html'
+    template_name = 'news/newslist.html'
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'Posts'
-    paginate_by = 2  # вот так мы можем указать количество записей на странице
+    paginate_by = 10  # вот так мы можем указать количество записей на странице
 
     # Переопределяем функцию получения списка товаров
     def get_queryset(self):
@@ -59,17 +58,46 @@ class getNews(ListView):
        context['filterset'] = self.filterset
        return context
 
-# # def getNews(request):
-# #     posts = Post.objects.order_by('-dateCreation')
-# #     return render(request, 'newslist.html', context = {'posts': posts}) 
 
+class PostCategoryListView(ListView):
+    # Указываем модель, объекты которой мы будем выводить
+    model = Post
+    # Поле, которое будет использоваться для сортировки объектов
+    ordering = '-dateCreation'
+    # Указываем имя шаблона, в котором будут все инструкции о том,
+    # как именно пользователю должны быть показаны наши объекты
+    template_name = 'news/post_category.html'
+    # Это имя списка, в котором будут лежать все объекты.
+    # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
+    context_object_name = 'Posts'
+    paginate_by = 10  # вот так мы можем указать количество записей на странице
+
+    def get_queryset(self):
+        '''
+        запрос к БД. сервисная функция, чтобы получить данные по фильтру
+        '''
+        self.id = resolve(self.request.path_info).kwargs['pk']
+        queryset = Post.objects.filter(postCategory = Category.objects.get(id=self.id))
+        return queryset
+
+    def get_context_data(self, **kwargs):
+       context = super().get_context_data(**kwargs)
+       # Добавляем в контекст объект фильтрации.
+       context['post_category'] = Category.objects.get(id = self.id) #передаем в  шаблон
+       return context
+
+
+# def getNews(request):
+#     posts = Post.objects.order_by('-dateCreation')
+#     return render(request, 'newslist.html', context = {'posts': posts}) 
 @cache_page(300) #в аргументы к декоратору передаём количество секунд, которые хотим, чтобы страница держалась в кэше.
-def post(request, pk):
+def PostDetail(request, pk):
     post = Post.objects.get(pk = pk)
-    return render(request, 'postDetail.html', context = {'post': post})
+    return render(request, 'news/postDetail.html', context = {'post': post})
+
 
 # Добавляем новое представление для создания новостей.
-class create_news(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     permission_required = ('NewsPortal.add_post')
     raise_exception = True
     # Указываем нашу разработанную форму
@@ -77,7 +105,8 @@ class create_news(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     # модель товаров
     model = Post
     # и новый шаблон, в котором используется форма.
-    template_name = 'news_create.html'
+    template_name = 'news/news_create.html'
+
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'NW'
@@ -86,70 +115,59 @@ class create_news(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         news_notification.apply_async([post.pk], countdown = 1)
         return super().form_valid(form)
 
-class edit_news(PermissionRequiredMixin, UpdateView):
+
+class NewsEdit(PermissionRequiredMixin, UpdateView):
     permission_required = ('NewsPortal.change_post')
     form_class = PostForm
     model = Post
-    template_name = 'news_edit.html'
+    template_name = 'news/news_edit.html'
+
 
 # Представление удаляющее новость.
-class delete_news(PermissionRequiredMixin, DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
-    template_name = 'news_delete.html'
-    success_url = reverse_lazy('newslist')
+    template_name = 'news/news_delete.html'
+    success_url = reverse_lazy('news:newslist') 
+
 
 # Добавляем новое представление для создания новостей.
-class create_article(PermissionRequiredMixin, CreateView):
+class ArticleCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('NewsPortal.add_post')
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель товаров
     model = Post
     # и новый шаблон, в котором используется форма.
-    template_name = 'news_create.html'
+    template_name = 'news/news_create.html'
+    
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'AR'
         return super().form_valid(form)
 
-class edit_article(PermissionRequiredMixin, UpdateView):
+
+class ArticleEdit(PermissionRequiredMixin, UpdateView):
     permission_required = ('NewsPortal.change_post')
     form_class = PostForm
     model = Post
-    template_name = 'news_edit.html'
+    template_name = 'news/news_edit.html'
+
 
 # Представление удаляющее новость.
-class delete_article(DeleteView):
+class ArticleDelete(DeleteView):
     model = Post
-    template_name = 'news_delete.html'
+    template_name = 'news/news_delete.html'
     success_url = reverse_lazy('newslist')
-
-
-#функция умножения
-def multiply(request):
-   """
-   Перемножение 
-   """
-   number = request.GET.get('number')
-   multiplier = request.GET.get('multiplier')
-
-   try:
-       result = int(number) * int(multiplier)
-       html = f"<html><body>{number}*{multiplier}={result}</body></html>"
-   except (ValueError, TypeError):
-       html = f"<html><body>Invalid input.</body></html>"
-
-   return HttpResponse(html)
 
 
 @login_required
 @csrf_protect
-def subscriptions(request):
+def subscriptions(request, pk):
+    print(pk)
     if request.method == 'POST':
         category_id = request.POST.get('category_id')
         category = Category.objects.get(id=category_id)
         action = request.POST.get('action')
-
         if action == 'subscribe':
             Subscription.objects.create(user=request.user, category=category)
         elif action == 'unsubscribe':
@@ -157,7 +175,6 @@ def subscriptions(request):
                 user=request.user,
                 category=category,
             ).delete()
-
     categories_with_subscriptions = Category.objects.annotate(
         user_subscribed=Exists(
             Subscription.objects.filter(
@@ -168,6 +185,6 @@ def subscriptions(request):
     ).order_by('name')
     return render(
         request,
-        'subscriptions.html',
+        'news/subscriptions.html',
         {'categories': categories_with_subscriptions},
     )

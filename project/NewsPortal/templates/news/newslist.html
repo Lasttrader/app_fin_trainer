@@ -23,7 +23,7 @@ Posts
     <hr>
     {# Теперь будем проверять права #}
     {% if perms.NewsPortal.add_post %}
-    <a href="{% url 'news_create' %}">Добавить новость или статью</a>
+    <a href="{% url 'news:create' %}">Добавить новость или статью</a><!-- news - это namespace (имя приложения) create  -имя ссылки -->
     {% endif %}
 
     {% for post in Posts %}

@@ -14,11 +14,9 @@ class Author(models.Model):
         postRat = self.post_set.aggregate(postedRating = Sum('postRating'))
         pRating = 0
         pRating += postRat.get('postedRating')
-
         commentRat = self.authorUser.comment_set.aggregate(commentRating = Sum('commentRating'))
         cRat = 0
         cRat += commentRat.get('commentRating')
-
         self.ratingAuthor = (pRating + cRat) / 2 #изменил формулу
         self.save()
     
@@ -62,7 +60,7 @@ class Post(models.Model): #post
         return f'{self.name.title()}: {self.description[:10]}'
 
     def get_absolute_url(self):
-        return reverse('postDetail', kwargs = {'pk' : self.pk})
+        return reverse('news:postDetail', kwargs = {'pk' : self.pk}) # здесь тоже пишем через :
     
     #методы после создания атрибутов, можно приступить к описанию методов
     def like(self):
