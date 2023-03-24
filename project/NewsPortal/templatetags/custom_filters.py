@@ -20,3 +20,7 @@ def censor(token):
     return pat.sub(lambda g: "*" * len(g.group(0)), token)
 
 
+#Для регистрации собственного тэга необходимо использовать другой декоратор simple_tag:
+@register.simple_tag
+def current_time(format_string):
+    return datetime.datetime.now().strftime(format_string)

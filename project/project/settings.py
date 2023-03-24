@@ -168,14 +168,15 @@ EMAIL_HOST_USER = "@yandex.ru"
 EMAIL_HOST_PASSWORD = "pass"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-
 DEFAULT_FROM_EMAIL = "@yandex.ru"
 
 
 ADMINS = (('name', '@yandex.ru'),)
 
+
 APPSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APPSCHEDULER_RUN_NOW_TIMEOUT = 25
+
 
 #celery broker
 CELERY_BROKER_URL = 'redis://localhost:6379'
@@ -184,6 +185,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
+
 #cache
 CACHES = {
     'default': {
@@ -191,3 +193,86 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style' : '{',
+    # формат сообщений
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+        'warns' : {
+            'format': '%(asctime)s %(pathname)s %(levelname)s %(message)s'
+        },
+        'err_crit' : {
+            'format': '%(asctime)s %(exc_info)s %(pathname)s %(levelname)s %(message)s'
+        }, 
+    },
+    # фильтр на debug = True
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    # обработчики от какого уровня делать определенные действия
+    'handlers' : {
+        'django_debug_handler': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'django_warns_handlear' : {
+            'level' : 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warns'    
+        },
+        'django_inf_handlear' : {
+            'level' : 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'filename' : 'general.log'    
+        },        
+        'django_err_handlear' : {
+            'level' : 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'err_crit',
+            'filename' : 'errors.log'    
+        },
+        'django_security_handlear' : {
+            'level' : 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'err_crit',
+            'filename' : 'security.log'    
+        },        
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+    },
+    # регистраторы - логгеры, которые используют обработчики из handlers
+    'loggers' :{
+        'django' : {
+            'handlers' : ['django_debug_handler', 'django_warns_handlear', 'django_inf_handlear'],
+        },
+        'django.request' : {
+            'handlers' : ['django_err_handlear', 'mail_admins'],
+        },
+        'django.server' : {
+            'handlers' : ['django_err_handlear', 'mail_admins'],
+        },
+        'django.template' : {
+            'handlers' : ['django_err_handlear'],
+        },
+        'django.db.backends' : {
+            'handlers' : ['django_err_handlear'],
+        },
+        'django.security' : {
+            'handlers' : ['django_security_handlear'],
+        },
+    },
+}    
+

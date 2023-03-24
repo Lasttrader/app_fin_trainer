@@ -2,6 +2,7 @@ from django_filters import FilterSet, ModelMultipleChoiceFilter,DateTimeFilter
 from django.forms import DateTimeInput
 from .models import Post, Category
 
+# на шаблоне первой страницы где подвыборка постов
 # Создаем свой набор фильтров для модели post.
 # FilterSet, который мы наследуем,
 # должен чем-то напомнить знакомые вам Django дженерики.
