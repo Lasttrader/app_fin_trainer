@@ -58,6 +58,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -125,7 +126,11 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = True #интернационализации будут поддерживаться в нашем приложении
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 USE_TZ = True
 
@@ -197,17 +202,18 @@ CACHES = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'style' : '{',
+    #'style' : '{', 
+
     # формат сообщений
     'formatters': {
         'simple': {
-            'format': '%(asctime)s %(levelname)s %(message)s'
+            'format': '%(asctime)s %(levelname)s %(message)s',
         },
         'warns' : {
-            'format': '%(asctime)s %(pathname)s %(levelname)s %(message)s'
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
         },
         'err_crit' : {
-            'format': '%(asctime)s %(exc_info)s %(pathname)s %(levelname)s %(message)s'
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
         }, 
     },
     # фильтр на debug = True
@@ -254,6 +260,8 @@ LOGGING = {
         },
     },
     # регистраторы - логгеры, которые используют обработчики из handlers
+    # для логгеров надо указать level
+    #prapogated - всплытие из баз в производ
     'loggers' :{
         'django' : {
             'handlers' : ['django_debug_handler', 'django_warns_handlear', 'django_inf_handlear'],

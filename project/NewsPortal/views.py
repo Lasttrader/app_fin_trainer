@@ -19,8 +19,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import cache_page # импортируем декоратор для кэширования отдельного представления
 from .tasks import news_notification
 
-# Create your views here.
+from django.utils.translation import gettext as _ # импортируем функцию для перевода
 
+# Create your views here.
 def index(request):
     return redirect('news:newslist') # имя приложения:имя ссылки
 
