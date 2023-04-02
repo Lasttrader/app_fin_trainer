@@ -20,10 +20,19 @@ from django.views.decorators.cache import cache_page # импортируем д
 from .tasks import news_notification
 
 from django.utils.translation import gettext as _ # импортируем функцию для перевода
+from django.utils.translation import activate, get_supported_language_variant
+
+
+from django.utils import timezone
+from django.shortcuts import redirect
+from django.utils.timezone import localtime 
+
+
+import pytz #  импортируем стандартный модуль для работы с часовыми поясами
 
 # Create your views here.
 def index(request):
-    return redirect('news:newslist') # имя приложения:имя ссылки
+    return redirect('news:newslist') # имя приложения:имя ссылки указаны в urls
 
 
 #список новостей
@@ -57,7 +66,14 @@ class GetNews(ListView):
        context = super().get_context_data(**kwargs)
        # Добавляем в контекст объект фильтрации.
        context['filterset'] = self.filterset
+       context['current_time'] = timezone.now()
+       context['timezones'] = pytz.common_timezones #  добавляем в контекст все доступные часовые пояса
        return context
+    
+    #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/')
 
 
 class PostCategoryListView(ListView):
@@ -189,3 +205,4 @@ def subscriptions(request, pk):
         'news/subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
+

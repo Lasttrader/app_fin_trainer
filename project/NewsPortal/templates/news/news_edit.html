@@ -1,15 +1,15 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'default.html' %}
 
 
 {% block content %}
-    <h1>Post</h1>
+<h1>Post</h1>
 
-    {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {# Добавим кнопку отправки данных формы #}
-        <input type="submit" value="Save" />
-    </form>
+{# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {# Добавим кнопку отправки данных формы #}
+    <input type="submit" value="Save" />
+</form>
 
 {% endblock content %}

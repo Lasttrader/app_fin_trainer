@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-02 12:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: NewsPortal/templates/news/newslist.html:17
+msgid "All news"
+msgstr "Все новости"
+
+#: NewsPortal/templates/news/newslist.html:26
+msgid "Add new or post"
+msgstr "Добавить новость или пост"
+
+#: NewsPortal/templates/news/newslist.html:34
+msgid "Read more"
+msgstr "Читать далее"
+
+#: fpages/admin.py:11
+msgid "Advanced options"
+msgstr ""
+
+#: templates/account/email/base_message.txt:1
+#, python-format
+msgid "Привет от %(site_name)s!"
+msgstr ""
+
+#: templates/account/email/base_message.txt:5
+#, python-format
+msgid ""
+" Спасибо, что пользуетесь %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.txt:5
+#, python-format
+msgid ""
+"Вы получили это сообщение, потому что пользователь %(user_display)s указал "
+"этот email при регистрации на сайте %(site_domain)s.\n"
+"\n"
+"Для подтверждения регистрации пройдите по ссылке %(activate_url)s\n"
+"\n"
+"Хорошего дня!\n"
+msgstr ""
+
+#: templates/default.html:38
+msgid "Check out my new cool translation"
+msgstr ""

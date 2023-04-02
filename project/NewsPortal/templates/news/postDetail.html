@@ -1,4 +1,4 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'default.html' %}
 
 {% load custom_filters %}
 
@@ -9,8 +9,8 @@ postDetail
 
 {% block content %}
 
-    <h1>{{ post.postTitle |censor}}</h1> 
-    <h4>{{post.dateCreation}}</h4>
-    <p>{{ post.postText |censor}} </p>
+<h1>{{ post.postTitle |censor}}</h1>
+<h4>{{post.dateCreation}}</h4>
+<p>{{ post.postText |censor}} </p>
 
 {% endblock content %}

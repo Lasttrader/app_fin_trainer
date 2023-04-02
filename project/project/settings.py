@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation', # обязательно впишите его перед админом
     'django.contrib.admin', # поддержка авторизации
     'django.contrib.auth', #доступ к view только для зарегистрированных пользователей
     'django.contrib.contenttypes',
@@ -65,7 +66,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware' 
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+
+    'NewsPortal.middlewares.TimezoneMiddleware', # add that middleware! 
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -124,6 +127,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = [
+    ('en-us', 'English'),
+    ('ru', 'Русский')
+]
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True #интернационализации будут поддерживаться в нашем приложении
@@ -131,6 +139,10 @@ USE_I18N = True #интернационализации будут поддер�
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.i18n',
+)
 
 USE_TZ = True
 

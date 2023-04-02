@@ -54,7 +54,7 @@ class Post(models.Model): #post
     postTitle = models.CharField(max_length = 255)
     postText = models.TextField() 
     postRating = models.SmallIntegerField(default=0) #rating из класса автор
-    slug = models.SlugField(max_length=128, unique=True, null=True)
+    slug = models.SlugField(max_length=128, unique=False, null=True)
 
     def __str__(self):
         return f'{self.name.title()}: {self.description[:10]}'

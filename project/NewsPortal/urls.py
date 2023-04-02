@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from .views import GetNews, PostDetail, PostFilter, index, NewsCreate, NewsEdit, NewsDelete, ArticleCreate, ArticleEdit, ArticleDelete, subscriptions, PostCategoryListView
 from django.views.decorators.cache import cache_page
+from django.conf.urls.i18n import i18n_patterns
 
 
 app_name = 'news' # имя приложения, этоу читывается в шаблонах и во views
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')), # подключаем встроенные эндопинты для работы с локализацией
     path('', index, name = 'index'),
     path('news/', cache_page(60) (GetNews.as_view()), name='newslist'),#нужно убрать запятую между кэш и view
     path('news/search/', GetNews.as_view(), name = 'search'),
@@ -19,5 +21,4 @@ urlpatterns = [
     # path('articles/create/', create_article.as_view(), name = 'article_create'),
     # path('news/<int:pk>/edit/', edit_article.as_view(), name = 'article_edit'),
     # path('news/<int:pk>/delete/', delete_article.as_view(), name = 'article_delete'),
-
 ]
