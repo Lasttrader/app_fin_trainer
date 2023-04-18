@@ -3212,3 +3212,53 @@ socialaccount
 static
 tz
 2023-04-02 14:42:06,280 ERROR "GET /news/ HTTP/1.1" 500 257822 /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/servers/basehttp.py None
+2023-04-13 09:16:17,651 ERROR Internal Server Error: /about/ /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/log.py (<class 'django.template.exceptions.TemplateDoesNotExist'>, TemplateDoesNotExist('flatpages/default.html'), <traceback object at 0x7f7298212580>)
+Traceback (most recent call last):
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/deprecation.py", line 138, in __call__
+    response = self.process_response(request, response)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/contrib/flatpages/middleware.py", line 12, in process_response
+    return flatpage(request, request.path_info)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/contrib/flatpages/views.py", line 45, in flatpage
+    return render_flatpage(request, f)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/contrib/flatpages/views.py", line 62, in render_flatpage
+    template = loader.get_template(DEFAULT_TEMPLATE)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: flatpages/default.html
+2023-04-13 09:16:17,669 ERROR "GET /about/ HTTP/1.1" 500 89180 /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/servers/basehttp.py None
+2023-04-13 09:34:54,566 ERROR Internal Server Error: /swagger-ui/ /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/log.py (<class 'django.template.exceptions.TemplateDoesNotExist'>, TemplateDoesNotExist('swagger-ui.html'), <traceback object at 0x7fadf904db00>)
+Traceback (most recent call last):
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: swagger-ui.html
+2023-04-13 09:34:54,578 ERROR "GET /swagger-ui/ HTTP/1.1" 500 83684 /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/servers/basehttp.py None
+2023-04-13 09:35:38,957 ERROR Internal Server Error: /swagger-ui/ /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/log.py (<class 'django.template.exceptions.TemplateDoesNotExist'>, TemplateDoesNotExist('swagger-ui.html'), <traceback object at 0x7fadf91d6980>)
+Traceback (most recent call last):
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: swagger-ui.html
+2023-04-13 09:35:38,980 ERROR "GET /swagger-ui/ HTTP/1.1" 500 83821 /home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/servers/basehttp.py None

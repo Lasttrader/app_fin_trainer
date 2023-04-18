@@ -2,13 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.shortcuts import reverse
-
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
 class Author(models.Model):
-    authorUser = models.OneToOneField(User, on_delete=models.CASCADE) #id и связь с user
-    ratingAuthor = models.SmallIntegerField(default=0) #rating
+    authorUser = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name = _('author_user')) #id и связь с user
+    ratingAuthor = models.SmallIntegerField(_('rating'), default=0) #rating
 
     def update_rating(self): # вместо цикл for лучше использовать aggregate 
         postRat = self.post_set.aggregate(postedRating = Sum('postRating'))
@@ -22,18 +22,23 @@ class Author(models.Model):
     
     def __str__(self):
         return self.authorUser.username
+    
+    
+    class Meta:
+        verbose_name = _('Author') 
+        verbose_name_plural = _('Authors') #множдественное число      
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=128, unique=True) #ctagory name
-    subscribers = models.ManyToManyField(User, related_name='categories')
+    name = models.CharField(_('name'), max_length=128, unique=True, ) #ctagory name
+    subscribers = models.ManyToManyField(User, related_name='categories', verbose_name =_('subscribers'))
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name = 'Категории'
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
 
 class Post(models.Model): #post
@@ -43,7 +48,7 @@ class Post(models.Model): #post
     POST = 'PST'
     CASES = 'CS'
     CATEGORY_CHOICES = (
-        (NEWS, 'Новость'),
+        (NEWS, _('News')),
         (ARTICLE, 'Статья'),
         (POST, 'Пост'),
         (CASES, 'Кейс')

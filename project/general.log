@@ -3341,3 +3341,86 @@ tz
 2023-04-02 14:44:50,471 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/views.py changed, reloading.
 2023-04-02 14:44:51,661 INFO Watching for file changes with StatReloader
 2023-04-02 14:45:49,181 WARNING Not Found: /favicon.ico
+2023-04-13 09:09:41,805 INFO Watching for file changes with StatReloader
+2023-04-13 09:10:22,404 WARNING Not Found: /favicon.ico
+2023-04-13 09:10:33,422 WARNING Not Found: /i18n/setlang/ws/
+2023-04-13 09:16:17,651 ERROR Internal Server Error: /about/
+Traceback (most recent call last):
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/deprecation.py", line 138, in __call__
+    response = self.process_response(request, response)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/contrib/flatpages/middleware.py", line 12, in process_response
+    return flatpage(request, request.path_info)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/contrib/flatpages/views.py", line 45, in flatpage
+    return render_flatpage(request, f)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/utils/decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/contrib/flatpages/views.py", line 62, in render_flatpage
+    template = loader.get_template(DEFAULT_TEMPLATE)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: flatpages/default.html
+2023-04-13 09:16:27,080 WARNING Not Found: /i18n/setlang/ws/
+2023-04-13 09:17:04,733 WARNING Not Found: /i18n/setlang/ws/
+2023-04-13 09:33:32,089 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/project/urls.py changed, reloading.
+2023-04-13 09:33:33,046 INFO Watching for file changes with StatReloader
+2023-04-13 09:33:57,300 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/project/urls.py changed, reloading.
+2023-04-13 09:33:58,092 INFO Watching for file changes with StatReloader
+2023-04-13 09:34:31,005 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/project/urls.py changed, reloading.
+2023-04-13 09:34:32,029 INFO Watching for file changes with StatReloader
+2023-04-13 09:34:54,566 ERROR Internal Server Error: /swagger-ui/
+Traceback (most recent call last):
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: swagger-ui.html
+2023-04-13 09:34:55,118 WARNING Not Found: /favicon.ico
+2023-04-13 09:35:38,957 ERROR Internal Server Error: /swagger-ui/
+Traceback (most recent call last):
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/home/lasttrader/anaconda3/envs/t2g/lib/python3.10/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: swagger-ui.html
+2023-04-13 09:35:39,242 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/project/urls.py changed, reloading.
+2023-04-13 09:35:40,474 INFO Watching for file changes with StatReloader
+2023-04-13 09:35:56,751 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/project/urls.py changed, reloading.
+2023-04-13 09:35:57,702 INFO Watching for file changes with StatReloader
+2023-04-13 10:04:25,897 WARNING Not Found: /unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js
+2023-04-13 10:04:33,153 WARNING Not Found: /unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js
+2023-04-13 10:15:01,264 WARNING Not Found: /favicon.ico
+2023-04-13 10:15:12,582 WARNING Not Found: /i18n/setlang/ws/
+2023-04-13 10:21:57,768 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/middlewares.py changed, reloading.
+2023-04-13 10:21:59,862 INFO Watching for file changes with StatReloader
+2023-04-13 10:22:17,994 WARNING Not Found: /i18n/setlang/ws/
+2023-04-13 10:23:59,549 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/views.py changed, reloading.
+2023-04-13 10:24:01,478 INFO Watching for file changes with StatReloader
+2023-04-13 10:25:00,521 WARNING Not Found: /i18n/setlang/ws/
+2023-04-13 10:25:03,370 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/urls.py changed, reloading.
+2023-04-13 10:25:05,762 INFO Watching for file changes with StatReloader
+2023-04-13 10:26:23,438 WARNING Not Found: /favicon.ico
+2023-04-13 10:31:12,642 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/models.py changed, reloading.
+2023-04-13 10:31:15,025 INFO Watching for file changes with StatReloader
+2023-04-13 10:41:01,255 INFO Watching for file changes with StatReloader
+2023-04-13 10:41:51,559 INFO Watching for file changes with StatReloader
+2023-04-13 10:42:13,258 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/models.py changed, reloading.
+2023-04-13 10:42:14,627 INFO Watching for file changes with StatReloader
+2023-04-13 10:44:58,918 INFO Watching for file changes with StatReloader

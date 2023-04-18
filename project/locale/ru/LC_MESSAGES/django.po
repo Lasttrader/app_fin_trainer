@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-02 12:49+0000\n"
+"POT-Creation-Date: 2023-04-13 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,51 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: NewsPortal/templates/news/newslist.html:17
+#: NewsPortal/models.py:10
+msgid "author_user"
+msgstr "Автор"
+
+#: NewsPortal/models.py:11
+msgid "rating"
+msgstr "рейтинг"
+
+#: NewsPortal/models.py:28
+msgid "Author"
+msgstr "Автор"
+
+#: NewsPortal/models.py:29
+msgid "Authors"
+msgstr ""
+
+#: NewsPortal/models.py:33
+msgid "name"
+msgstr "Название"
+
+#: NewsPortal/models.py:34
+msgid "subscribers"
+msgstr "подписчики"
+
+#: NewsPortal/models.py:40
+msgid "Category"
+msgstr "Категория"
+
+#: NewsPortal/models.py:41
+msgid "Categories"
+msgstr "Категории"
+
+#: NewsPortal/models.py:51
+msgid "News"
+msgstr "Новости"
+
+#: NewsPortal/templates/news/newslist.html:20
 msgid "All news"
 msgstr "Все новости"
 
-#: NewsPortal/templates/news/newslist.html:26
+#: NewsPortal/templates/news/newslist.html:30
 msgid "Add new or post"
 msgstr "Добавить новость или пост"
 
-#: NewsPortal/templates/news/newslist.html:34
+#: NewsPortal/templates/news/newslist.html:38
 msgid "Read more"
 msgstr "Читать далее"
 
@@ -59,6 +95,6 @@ msgid ""
 "Хорошего дня!\n"
 msgstr ""
 
-#: templates/default.html:38
+#: templates/default.html:105
 msgid "Check out my new cool translation"
 msgstr ""

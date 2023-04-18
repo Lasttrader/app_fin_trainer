@@ -6,7 +6,6 @@ from django.conf.urls.i18n import i18n_patterns
 
 app_name = 'news' # имя приложения, этоу читывается в шаблонах и во views
 urlpatterns = [
-    path('i18n/', include('django.conf.urls.i18n')), # подключаем встроенные эндопинты для работы с локализацией
     path('', index, name = 'index'),
     path('news/', cache_page(60) (GetNews.as_view()), name='newslist'),#нужно убрать запятую между кэш и view
     path('news/search/', GetNews.as_view(), name = 'search'),

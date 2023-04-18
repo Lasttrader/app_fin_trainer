@@ -26,6 +26,7 @@ from django.utils.translation import activate, get_supported_language_variant
 from django.utils import timezone
 from django.shortcuts import redirect
 from django.utils.timezone import localtime 
+import zoneinfo
 
 
 import pytz #  импортируем стандартный модуль для работы с часовыми поясами

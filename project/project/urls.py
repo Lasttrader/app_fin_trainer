@@ -16,11 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),  # Оставили только allauth
     path('pages/', include('django.contrib.flatpages.urls')), #это статичные страницы
-    path('', include('NewsPortal.urls')) #это страницы с приложения
+    path('', include('NewsPortal.urls')), #это страницы с приложения
+    path('swagger-ui/', TemplateView.as_view(
+       template_name='swagger_ui.html',
+       extra_context={'schema_url':'openapi-schema'}
+   ), name='swagger_ui')
 ]
