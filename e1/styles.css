@@ -1,0 +1,31 @@
+.navigation {
+    float: right;
+    height: 100%;
+}
+
+.navigation a {
+    height: 100%;
+    display: table;
+    float: left;
+    padding: 20px 20px;
+    background-color: #101010;
+}
+
+.navigation a li {
+    vertical-align: middle;
+    display: table-cell;
+    font-size: 20px;
+    color: white;
+}
+
+.navigation a:hover {
+    background-color: rgb(3, 181, 89);
+    color: #101010;
+}
+
+.leftfoto {
+    float: left;
+    margin: 4px 10px 2px 0px;
+    height: 200px;
+    width: 300px;
+}
