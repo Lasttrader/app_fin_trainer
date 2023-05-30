@@ -31,9 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'modeltranslation', # обязательно впишите его перед админом
-    'django.contrib.admin', # поддержка авторизации
-    'django.contrib.auth', #доступ к view только для зарегистрированных пользователей
+    'modeltranslation',  # обязательно впишите его перед админом
+    'django.contrib.admin',  # поддержка авторизации
+    'django.contrib.auth',  # доступ к view только для зарегистрированных пользователей
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -53,18 +53,17 @@ INSTALLED_APPS = [
     "django_apscheduler",
 
     'rest_framework',
-
 ]
 
 SITE_ID = 1
 
 REST_FRAMEWORK = {
-   'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-   'PAGE_SIZE': 10,
-   'DEFAULT_PERMISSION_CLASSES': [
-       'rest_framework.permissions.IsAuthenticated',
-   ]
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 
 }
 
@@ -80,7 +79,7 @@ MIDDLEWARE = [
 
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 
-    'NewsPortal.middlewares.TimezoneMiddleware', # add that middleware! 
+    'NewsPortal.middlewares.TimezoneMiddleware',  # add that middleware!
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -88,7 +87,8 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/news')],#указываем корневую директорию, где будут шаблоны
+        # указываем корневую директорию, где будут шаблоны
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/news')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -146,7 +146,7 @@ LANGUAGES = [
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True #интернационализации будут поддерживаться в нашем приложении
+USE_I18N = True  # интернационализации будут поддерживаться в нашем приложении
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
@@ -176,8 +176,10 @@ LOGIN_REDIRECT_URL = "/news/newslist/"
 
 # Этого раздела может не быть, добавьте его в указанном виде.
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend', #реализующий аутентификацию по username;
-    'allauth.account.auth_backends.AuthenticationBackend', # бэкенд аутентификации, предоставленный пакетом
+    # реализующий аутентификацию по username;
+    'django.contrib.auth.backends.ModelBackend',
+    # бэкенд аутентификации, предоставленный пакетом
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 #
@@ -186,10 +188,11 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"} #Чтобы allauth распознал нашу форму как ту, что должна выполняться вместо формы по умолчанию, необходимо добавить строчку
+# Чтобы allauth распознал нашу форму как ту, что должна выполняться вместо формы по умолчанию, необходимо добавить строчку
+ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 #
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
@@ -199,7 +202,6 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "@yandex.ru"
 
-
 ADMINS = (('name', '@yandex.ru'),)
 
 
@@ -207,7 +209,7 @@ APPSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APPSCHEDULER_RUN_NOW_TIMEOUT = 25
 
 
-#celery broker
+# celery broker
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -215,30 +217,31 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 
-#cache
+# cache
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+        # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
     }
 }
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    #'style' : '{', 
+    # 'style' : '{',
 
     # формат сообщений
     'formatters': {
         'simple': {
             'format': '%(asctime)s %(levelname)s %(message)s',
         },
-        'warns' : {
+        'warns': {
             'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
         },
-        'err_crit' : {
+        'err_crit': {
             'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
-        }, 
+        },
     },
     # фильтр на debug = True
     'filters': {
@@ -247,37 +250,37 @@ LOGGING = {
         },
     },
     # обработчики от какого уровня делать определенные действия
-    'handlers' : {
+    'handlers': {
         'django_debug_handler': {
             'level': 'DEBUG',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'django_warns_handlear' : {
-            'level' : 'WARNING',
+        'django_warns_handlear': {
+            'level': 'WARNING',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
-            'formatter': 'warns'    
+            'formatter': 'warns'
         },
-        'django_inf_handlear' : {
-            'level' : 'INFO',
+        'django_inf_handlear': {
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'simple',
-            'filename' : 'general.log'    
-        },        
-        'django_err_handlear' : {
-            'level' : 'ERROR',
-            'class': 'logging.FileHandler',
-            'formatter': 'err_crit',
-            'filename' : 'errors.log'    
+            'filename': 'general.log'
         },
-        'django_security_handlear' : {
-            'level' : 'ERROR',
+        'django_err_handlear': {
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
             'formatter': 'err_crit',
-            'filename' : 'security.log'    
-        },        
+            'filename': 'errors.log'
+        },
+        'django_security_handlear': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'err_crit',
+            'filename': 'security.log'
+        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
@@ -285,26 +288,25 @@ LOGGING = {
     },
     # регистраторы - логгеры, которые используют обработчики из handlers
     # для логгеров надо указать level
-    #prapogated - всплытие из баз в производ
-    'loggers' :{
-        'django' : {
-            'handlers' : ['django_debug_handler', 'django_warns_handlear', 'django_inf_handlear'],
+    # prapogated - всплытие из баз в производ
+    'loggers': {
+        'django': {
+            'handlers': ['django_debug_handler', 'django_warns_handlear', 'django_inf_handlear'],
         },
-        'django.request' : {
-            'handlers' : ['django_err_handlear', 'mail_admins'],
+        'django.request': {
+            'handlers': ['django_err_handlear', 'mail_admins'],
         },
-        'django.server' : {
-            'handlers' : ['django_err_handlear', 'mail_admins'],
+        'django.server': {
+            'handlers': ['django_err_handlear', 'mail_admins'],
         },
-        'django.template' : {
-            'handlers' : ['django_err_handlear'],
+        'django.template': {
+            'handlers': ['django_err_handlear'],
         },
-        'django.db.backends' : {
-            'handlers' : ['django_err_handlear'],
+        'django.db.backends': {
+            'handlers': ['django_err_handlear'],
         },
-        'django.security' : {
-            'handlers' : ['django_security_handlear'],
+        'django.security': {
+            'handlers': ['django_security_handlear'],
         },
     },
-}    
-
+}
