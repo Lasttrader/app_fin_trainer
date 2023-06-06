@@ -191,7 +191,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # Чтобы allauth распознал нашу форму как ту, что должна выполняться вместо формы по умолчанию, необходимо добавить строчку
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
-#
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
@@ -203,7 +202,6 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "@yandex.ru"
 
 ADMINS = (('name', '@yandex.ru'),)
-
 
 APPSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APPSCHEDULER_RUN_NOW_TIMEOUT = 25

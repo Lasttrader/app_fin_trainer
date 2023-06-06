@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 class Author(models.Model):
     authorUser = models.OneToOneField(
-        User, on_delete=models.CASCADE, verbose_name=_('author_user'))  # id и связь с user
-    ratingAuthor = models.SmallIntegerField(_('rating'), default=0)  # rating
+        User, on_delete=models.CASCADE, verbose_name='author_user')  # id и связь с user
+    ratingAuthor = models.SmallIntegerField('rating', default=0)  # rating
 
     def update_rating(self):  # вместо цикл for лучше использовать aggregate
         postRat = self.post_set.aggregate(postedRating=Sum('postRating'))
@@ -24,38 +24,50 @@ class Author(models.Model):
         return self.authorUser.username
 
     class Meta:
-        verbose_name = _('Author')
-        verbose_name_plural = _('Authors')  # множдественное число
+        verbose_name = 'Author'
+        verbose_name_plural = 'Authors'  # множдественное число
 
 
 class Category(models.Model):
-    name = models.CharField(_('name'), max_length=128,
+    name = models.CharField('name', max_length=128,
                             unique=True, )  # ctagory name
     subscribers = models.ManyToManyField(
-        User, related_name='categories', verbose_name=_('subscribers'))
+        User, related_name='categories', verbose_name='subscribers')
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = _('Category')
-        verbose_name_plural = _('Categories')
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
 
 
 class Post(models.Model):  # post
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    NEWS = 'NW'
-    ARTICLE = 'AR'
-    POST = 'PST'
-    CASES = 'CS'
+    TANKS = 'Танки'
+    HILLS = 'Хилы'
+    DD = 'ДД'
+    TORG = 'Торговцы'
+    GILD = 'Гилдмастеры'
+    KVEST = 'Квестгиверы'
+    KUZNETS = 'Кузнецы'
+    KOZHEV = 'Кожевники'
+    ZELVAR = 'Зельевары'
+    MASTERS = 'Мастера заклинаний'
     CATEGORY_CHOICES = (
-        (NEWS, _('News')),
-        (ARTICLE, 'Статья'),
-        (POST, 'Пост'),
-        (CASES, 'Кейс')
+        (TANKS, 'Танки'),
+        (HILLS, 'Хилы'),
+        (DD, 'ДД'),
+        (TORG, 'Торговцы'),
+        (GILD, 'Гилдмастеры'),
+        (KVEST, 'Квестгиверы'),
+        (KUZNETS, 'Кузнецы'),
+        (KOZHEV, 'Кожевники'),
+        (ZELVAR, 'Зельевары'),
+        (MASTERS, 'Мастера заклинаний')
     )
     categoryType = models.CharField(
-        max_length=4, choices=CATEGORY_CHOICES, default=POST)
+        max_length=20, choices=CATEGORY_CHOICES, default=TANKS)
     dateCreation = models.DateTimeField(auto_now_add=True)
     # связь many2many с классом PostCategory
     postCategory = models.ManyToManyField(Category, through='PostCategory')
