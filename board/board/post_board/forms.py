@@ -9,15 +9,12 @@ class PostForm(forms.ModelForm):
         fields = [
             'author',
             'categoryType',
-            'postCategory',
             'postTitle',
             'postText',
-            'slug']
+        ]
 
 
 class CommentForm(forms.ModelForm):
-    content = forms.CharField(
-        label='', widget=forms.TextInput(attrs={'placeholder': 'Добавьте ваш комментарий....'}))
 
     class Meta:
         model = Comment

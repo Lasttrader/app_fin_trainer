@@ -10,21 +10,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="{% url 'post_board:index' %}">Profile <span
+                    <a class="nav-link text-white" href="{% url 'users:users-profile' %}">Профиль <span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'post_board:logout' %}">Выйти</a>
+                    <a class="nav-link text-white" href="{% url 'users:users-logout' %}">Выход</a>
                 </li>
             </ul>
             {% else %}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="{% url 'post_board:register' %}">Регистрация <span
+                    <a class="nav-link text-white" href="{% url 'users:users-sign-up' %}">Регистрация <span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'post_board:login' %}">Войти</a>
+                    <a class="nav-link text-white" href="{% url 'users:users-login' %}">Вход</a>
                 </li>
             </ul>
             {% endif %}

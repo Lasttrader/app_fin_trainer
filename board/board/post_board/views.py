@@ -16,7 +16,7 @@ from django.views.generic import (View,
                                   DeleteView)
 from django.urls import reverse_lazy, resolve
 
-from .models import Post, Category, PostCategory, Subscription
+from .models import Post, Category, Subscription
 
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
@@ -54,34 +54,19 @@ def index(request):
 
 
 class BoardList(ListView):
-    # Указываем модель, объекты которой мы будем выводить
     model = Post
-    # Поле, которое будет использоваться для сортировки объектов
     ordering = '-dateCreation'
-    # Указываем имя шаблона, в котором будут все инструкции о том,
-    # как именно пользователю должны быть показаны наши объекты
     template_name = 'board/index.html'
-    # Это имя списка, в котором будут лежать все объекты.
-    # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'Posts'
     paginate_by = 10  # вот так мы можем указать количество записей на странице
 
-    # Переопределяем функцию получения списка товаров
     def get_queryset(self):
-        # Получаем обычный запрос
         queryset = super().get_queryset()
-        # Используем наш класс фильтрации.
-        # self.request.GET содержит объект QueryDict, который мы рассматривали
-        # в этом юните ранее.
-        # Сохраняем нашу фильтрацию в объекте класса,
-        # чтобы потом добавить в контекст и использовать в шаблоне.
         self.filterset = BoardFilter(self.request.GET, queryset)
-        # Возвращаем из функции отфильтрованный список товаров
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
         return context
 
@@ -106,34 +91,32 @@ def BoardDetail(request, pk):
     return render(request, 'board/board_detail.html', context)
 
 
-class BoardCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
-    permission_required = ('post_board.add_post')
+class BoardCreate(LoginRequiredMixin, CreateView):
     raise_exception = True
-    # Указываем нашу разработанную форму
     form_class = PostForm
-    # модель товаров
     model = Post
-    # и новый шаблон, в котором используется форма.
     template_name = 'board/board_create.html'
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.categoryType = 'NW'
+        post.categoryType = 'Танки'
+
         post.save()
-        # уведомление для подписчиков о создании новой новости через 5 сек после создания
         news_notification.apply_async([post.pk], countdown=1)
         return super().form_valid(form)
 
 
-class BoardEdit(PermissionRequiredMixin, UpdateView):
-    permission_required = ('post_board.change_post')
+class BoardEdit(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'board/board_edit.html'
 
 
-class BoardDelete(PermissionRequiredMixin, DeleteView):
-    pass
+class BoardDelete(LoginRequiredMixin, DeleteView):
+    permission_required = ('post_board.change_post')
+    model = Post
+    template_name = 'board/board_delete.html'
+    success_url = reverse_lazy('post_board:index')
 
 
 @login_required
@@ -165,113 +148,4 @@ def subscriptions(request, pk):
     return render(
         request,
         'news/subscriptions.html',
-        {'categories': categories_with_subscriptions},
-    )
-
-
-class UserLoginView(View):
-    """
-     Logs author into dashboard.
-    """
-    template_name = 'account/login.html'
-    context_object = {"login_form": UserLoginForm}
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, self.context_object)
-
-    def post(self, request, *args, **kwargs):
-        login_form = UserLoginForm(data=request.POST)
-        if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user:
-                login(request, user)
-                messages.success(request, f"Login Successful ! "
-                                          f"Welcome {user.username}.")
-                return redirect('post_board:list')
-            else:
-                messages.error(request,
-                               f"Invalid Login details: {username}, {password} "
-                               f"are not valid username and password !!! Please "
-                               f"enter a valid username and password.")
-                return render(request, self.template_name, self.context_object)
-        else:
-            messages.error(request, f"Invalid username and password")
-            return render(request, self.template_name, self.context_object)
-
-
-class UserLogoutView(View):
-    """
-     Logs user out of the dashboard.
-    """
-    template_name = 'account/logout.html'
-
-    def get(self, request):
-        logout(request)
-        messages.success(request, "You have successfully logged out.")
-        return render(request, self.template_name)
-
-
-class UserRegisterView(View):
-    """
-      View to let users register
-    """
-    template_name = 'account/register.html'
-    context_object = {
-        "register_form": UserRegisterForm()
-    }
-
-    def get(self, request):
-        return render(request, self.template_name, self.context_object)
-
-    def post(self, request, *args, **kwargs):
-        register_form = UserRegisterForm(request.POST)
-        if register_form.is_valid():
-            user = register_form.save(commit=False)
-            user.is_active = False
-            user.save()
-            current_site = get_current_site(request)
-            subject = 'Activate Your Bona Blog Account'
-            message = render_to_string('account/account_activation_email.html',
-                                       {
-                                           'user': user,
-                                           'domain': current_site.domain,
-                                           'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                                           'token': account_activation_token.make_token(user),
-                                       })
-            user.email_user(subject, message)
-            return redirect('post_board:account_activation_sent')
-        else:
-            messages.error(request, "Please provide valid information.")
-            # Redirect user to register page
-            return render(request, self.template_name, self.context_object)
-
-
-class AccountActivationSentView(View):
-
-    def get(self, request):
-        return render(request, 'account/account_activation_sent.html')
-
-
-class ActivateView(View):
-
-    def get(self, request, uidb64, token):
-        try:
-            uid = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-        if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.profile.email_confirmed = True
-            user.save()
-            login(request, user)
-            username = user.username
-            messages.success(request, f"Congratulations {username} !!! "
-                                      f"Your account was created and activated "
-                                      f"successfully"
-                             )
-            return redirect('post_board:login')
-        else:
-            return render(request, 'account/account_activation_invalid.html')
+        {'categories': categories_with_subscriptions},)

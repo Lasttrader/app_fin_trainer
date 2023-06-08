@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% block title %}Home Page{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -10,9 +10,7 @@
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        {% if perms.post_board.add_post %}
                         <button formaction="{% url 'post_board:board_create' %}">Подать объявление</button>
-                        {% endif %}>
                     </form>
                 </div>
             </div>
