@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models import Sum
+from django.shortcuts import reverse
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
@@ -38,8 +40,8 @@ class Category(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
 
 
 class Post(models.Model):  # post
@@ -81,20 +83,17 @@ class Post(models.Model):  # post
 
     def get_absolute_url(self):
         # здесь тоже пишем через :
-        return reverse('news:postDetail', kwargs={'pk': self.pk})
-
-    # методы после создания атрибутов, можно приступить к описанию методов
-    def like(self):
-        self.postRating += 1
-        self.save()
-
-    def dislike(self):
-        self.postRating -= 1
-        self.save()
+        return reverse('post_board:board_detail', kwargs={'pk': self.pk})
 
     def preview(self):
         # форматирование лучший вариант нежели просто конкатенация
         return f'{self.postText[0:100]}{" ..."}'
+
+    def comment_count(self):
+        return self.comment_set.all().count()
+
+    def comments(self):
+        return self.comment_set.all()
 
     def __str__(self):
         return self.postTitle
@@ -112,13 +111,8 @@ class Comment(models.Model):
     commentDateCreation = models.DateTimeField(auto_now_add=True)
     commentRating = models.SmallIntegerField(default=0)
 
-    def like(self):
-        self.commentRating += 1
-        self.save()
-
-    def dislike(self):
-        self.commentRating -= 1
-        self.save()
+    def __str__(self):
+        return self.commentText
 
 
 class Subscription(models.Model):

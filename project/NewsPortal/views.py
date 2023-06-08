@@ -16,27 +16,32 @@ from .models import Post, Category, PostCategory, Subscription
 
 from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.cache import cache_page # импортируем декоратор для кэширования отдельного представления
+# импортируем декоратор для кэширования отдельного представления
+from django.views.decorators.cache import cache_page
 from .tasks import news_notification
 
-from django.utils.translation import gettext as _ # импортируем функцию для перевода
+# импортируем функцию для перевода
+from django.utils.translation import gettext as _
 from django.utils.translation import activate, get_supported_language_variant
 
 
 from django.utils import timezone
 from django.shortcuts import redirect
-from django.utils.timezone import localtime 
+from django.utils.timezone import localtime
 import zoneinfo
 
 
-import pytz #  импортируем стандартный модуль для работы с часовыми поясами
+import pytz  # импортируем стандартный модуль для работы с часовыми поясами
 
 # Create your views here.
+
+
 def index(request):
-    return redirect('news:newslist') # имя приложения:имя ссылки указаны в urls
+    # имя приложения:имя ссылки указаны в urls
+    return redirect('news:newslist')
 
 
-#список новостей
+# список новостей
 class GetNews(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
@@ -52,25 +57,26 @@ class GetNews(ListView):
 
     # Переопределяем функцию получения списка товаров
     def get_queryset(self):
-       # Получаем обычный запрос
-       queryset = super().get_queryset()
-       # Используем наш класс фильтрации.
-       # self.request.GET содержит объект QueryDict, который мы рассматривали
-       # в этом юните ранее.
-       # Сохраняем нашу фильтрацию в объекте класса,
-       # чтобы потом добавить в контекст и использовать в шаблоне.
-       self.filterset = PostFilter(self.request.GET, queryset)
-       # Возвращаем из функции отфильтрованный список товаров
-       return self.filterset.qs
+        # Получаем обычный запрос
+        queryset = super().get_queryset()
+        # Используем наш класс фильтрации.
+        # self.request.GET содержит объект QueryDict, который мы рассматривали
+        # в этом юните ранее.
+        # Сохраняем нашу фильтрацию в объекте класса,
+        # чтобы потом добавить в контекст и использовать в шаблоне.
+        self.filterset = PostFilter(self.request.GET, queryset)
+        # Возвращаем из функции отфильтрованный список товаров
+        return self.filterset.qs
 
     def get_context_data(self, **kwargs):
-       context = super().get_context_data(**kwargs)
-       # Добавляем в контекст объект фильтрации.
-       context['filterset'] = self.filterset
-       context['current_time'] = timezone.now()
-       context['timezones'] = pytz.common_timezones #  добавляем в контекст все доступные часовые пояса
-       return context
-    
+        context = super().get_context_data(**kwargs)
+        # Добавляем в контекст объект фильтрации.
+        context['filterset'] = self.filterset
+        context['current_time'] = timezone.now()
+        # добавляем в контекст все доступные часовые пояса
+        context['timezones'] = pytz.common_timezones
+        return context
+
     #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
     def post(self, request):
         request.session['django_timezone'] = request.POST['timezone']
@@ -95,23 +101,26 @@ class PostCategoryListView(ListView):
         запрос к БД. сервисная функция, чтобы получить данные по фильтру
         '''
         self.id = resolve(self.request.path_info).kwargs['pk']
-        queryset = Post.objects.filter(postCategory = Category.objects.get(id=self.id))
+        queryset = Post.objects.filter(
+            postCategory=Category.objects.get(id=self.id))
         return queryset
 
     def get_context_data(self, **kwargs):
-       context = super().get_context_data(**kwargs)
-       # Добавляем в контекст объект фильтрации.
-       context['post_category'] = Category.objects.get(id = self.id) #передаем в  шаблон
-       return context
+        context = super().get_context_data(**kwargs)
+        # Добавляем в контекст объект фильтрации.
+        context['post_category'] = Category.objects.get(
+            id=self.id)  # передаем в  шаблон
+        return context
 
 
 # def getNews(request):
 #     posts = Post.objects.order_by('-dateCreation')
-#     return render(request, 'newslist.html', context = {'posts': posts}) 
-@cache_page(300) #в аргументы к декоратору передаём количество секунд, которые хотим, чтобы страница держалась в кэше.
+#     return render(request, 'newslist.html', context = {'posts': posts})
+# в аргументы к декоратору передаём количество секунд, которые хотим, чтобы страница держалась в кэше.
+@cache_page(300)
 def PostDetail(request, pk):
-    post = Post.objects.get(pk = pk)
-    return render(request, 'news/postDetail.html', context = {'post': post})
+    post = Post.objects.get(pk=pk)
+    return render(request, 'news/postDetail.html', context={'post': post})
 
 
 # Добавляем новое представление для создания новостей.
@@ -129,8 +138,8 @@ class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         post = form.save(commit=False)
         post.categoryType = 'NW'
         post.save()
-        #уведомление для подписчиков о создании новой новости через 5 сек после создания
-        news_notification.apply_async([post.pk], countdown = 1)
+        # уведомление для подписчиков о создании новой новости через 5 сек после создания
+        news_notification.apply_async([post.pk], countdown=1)
         return super().form_valid(form)
 
 
@@ -145,7 +154,7 @@ class NewsEdit(PermissionRequiredMixin, UpdateView):
 class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news/news_delete.html'
-    success_url = reverse_lazy('news:newslist') 
+    success_url = reverse_lazy('news:newslist')
 
 
 # Добавляем новое представление для создания новостей.
@@ -157,7 +166,7 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     model = Post
     # и новый шаблон, в котором используется форма.
     template_name = 'news/news_create.html'
-    
+
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'AR'
@@ -206,4 +215,3 @@ def subscriptions(request, pk):
         'news/subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
-
