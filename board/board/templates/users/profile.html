@@ -2,28 +2,27 @@
 {% block title %}Profile Page{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+
 <div class="container">
     <div class="row mt-5 pt-3">
         <div class="col-md-6 offset-md-3">
             <div class="card my-3 shadow">
                 <div class="card-body">
-                    <span class="h4">Profile Page</span>
+                    <span class="h4">Профиль</span>
                     <!-- Button trigger modal -->
                     <span>
                         <button type="button" class="btn btn-info float-right btn-sm" data-toggle="modal"
                             data-target="#exampleModal">
-                            Edit Profile
+                            Редактировать профиль
                         </button>
                     </span>
-
-
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
                             <img class="img-thumbnail" src="{{ user.profilemodel.image.url }}" alt="profile-img">
                         </div>
                         <div class="col-md-8">
-                            <h4>Name: {{ user.username }}</h4>
+                            <h4>Имя: {{ user.username }}</h4>
                             <h4>Email: {{ user.email }} </h4>
                         </div>
                     </div>
@@ -33,7 +32,70 @@
     </div>
 </div>
 
+<div class="container">
+    <div class="row mt-5 pt-3">
+        <div class="col-md-6 offset-md-3">
+            {% for post in posts %}
+            <div class="card shadow my-3">
+                <div class="card-body">
+                    <div class="row">
 
+                        <div class="col-md-8">
+                            <small>{{ post.dateCreation }}</small>
+                            <p>{{post.categoryType}} </p>
+
+                            <span><a class="btn btn-danger float-right btn-sm"
+                                    href="{% url 'post_board:board_delete' post.id %}">Удалить</a></span>
+                            <span><a class="btn btn-primary mx-2 float-right btn-sm"
+                                    href="{% url 'post_board:board_edit' post.id %}">Редактировать</a></span>
+                            <hr>
+                            <h4>{{ post.postTitle }}</h4>
+                            <p>
+                                {{ post.content }}
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mt-3">
+                        <a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                            aria-controls="collapseExample">
+                            Comments: {{ post.comment_count }}
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div style="height: 250px; overflow-y: scroll;" class="card card-body">
+                            {% for comment in post.comments %}
+                            <p class="text-justify">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{ comment.commentUser.username }}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ comment.commentText }}
+                                    {{ comment.status }}
+                                    {{ comment.commentId }}
+                                    {{ comment.pk }}
+                                </div>
+                                <form method="post" action="{% url 'post_board:decline' comment.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                        class="btn btn-primary mx-2 float-right btn-sm">Отклонить</button>
+                                </form>
+                                <form method="post" action="{% url 'post_board:approved' comment.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger float-right btn-sm">Подтвердить</button>
+                                </form>
+                            </div>
+                            <hr>
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal -->
@@ -41,7 +103,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Profile Information</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Редактироваь профиль</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -56,6 +118,7 @@
                             {% csrf_token %}
                             {{ u_form|crispy }}
                             {{ p_form|crispy }}
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btn-sm"
                                     data-dismiss="modal">Cancel</button>
@@ -69,4 +132,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}

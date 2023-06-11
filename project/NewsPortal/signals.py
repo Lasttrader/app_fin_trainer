@@ -15,7 +15,7 @@ from .models import Post, PostCategory
 #     msg.attach_alternative(html_content, "text/html")
 #     msg.send()
 
-@receiver(m2m_changed, sender=PostCategory)
+@receiver(m2m_changed, sender=Comment)
 def post_created(sender, instance, **kwargs):
     if kwargs['action'] == "post_add":
         categories = instance.postCategory.all()

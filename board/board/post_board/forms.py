@@ -7,27 +7,17 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-            'author',
             'categoryType',
             'postTitle',
             'postText',
+            'upload',
         ]
-
 
 class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
         fields = ('commentText',)
-
-
-class PostModelForm(forms.ModelForm):
-    content = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}))
-
-    class Meta:
-        model = Post
-        fields = ('postTitle', 'postText')
-
 
 class PostUpdateForm(forms.ModelForm):
     class Meta:

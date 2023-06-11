@@ -50,7 +50,7 @@ class Post(models.Model):  # post
     # связь many2many с классом PostCategory
     postTitle = models.CharField(max_length=255)
     postText = models.TextField()
-    upload = models.ImageField(upload_to='uploads/', null=True)
+    upload = models.ImageField(upload_to='uploads/', blank=True)
 
     def __str__(self):
         return f'{self.name.title()}: {self.description[:10]}'
@@ -74,10 +74,17 @@ class Post(models.Model):  # post
 
 
 class Comment(models.Model):
+    commentId = models.AutoField(primary_key=True)
     commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
     commentUser = models.ForeignKey(User, on_delete=models.Case)
     commentText = models.TextField()
     commentDateCreation = models.DateTimeField(auto_now_add=True)
+    STATUSES_CHOICES = (
+        ('Decline', 'Decline'),
+        ('Approved', 'Approved'),
+        ('Waiting', 'Waiting')
+        )
+    status = models.CharField(max_length=20, choices=STATUSES_CHOICES, default='Waiting')
 
     def __str__(self):
         return self.commentText
@@ -92,5 +99,4 @@ class Subscription(models.Model):
     category = models.ForeignKey(
         to='Category',
         on_delete=models.CASCADE,
-        related_name='subscriptions',
-    )
+        related_name='subscriptions',)

@@ -1,0 +1,8 @@
+django
+django-crispy-forms
+crispy-bootstrap4
+django-allauth
+django-filter
+redis
+celery
+pillow

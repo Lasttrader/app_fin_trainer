@@ -53,7 +53,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -161,13 +160,20 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "@yandex.ru"
+EMAIL_HOST_USER = "gssokolova2016@yandex.ru"
 EMAIL_HOST_PASSWORD = "pass"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = "@yandex.ru"
+DEFAULT_FROM_EMAIL = "gssokolova2016@yandex.ru"
 
-ADMINS = (('name', '@yandex.ru'),)
+ADMINS = (('name', 'gssokolova2016@yandex.ru'),)
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# celery broker
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

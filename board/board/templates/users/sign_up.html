@@ -12,9 +12,12 @@
 						<hr>
 						<form method="POST">
 							{% csrf_token %}
-							{{ form|crispy }}
+							{{ form.as_p }}
 							<input class="btn btn-primary btn-block" type="submit" value="Создать">
 						</form>
+						<a class="btn btn-success"
+							href="http://127.0.0.1:8000/accounts/yandex/login/?process=login">Yandex вход</a>
+
 					</div>
 				</div>
 			</div>

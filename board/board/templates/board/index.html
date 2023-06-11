@@ -4,13 +4,14 @@
 {% block content %}
 <div class="container">
     <div class="row mt-5 pt-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card my-3 shadow">
                 <div class="card-body">
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button formaction="{% url 'post_board:board_create' %}">Подать объявление</button>
+                        <button class="btn btn-danger float-left btn-lm"
+                            formaction="{% url 'post_board:board_create' %}">Подать объявление</button>
                     </form>
                 </div>
             </div>

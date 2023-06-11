@@ -3,6 +3,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django import forms
 from django.core.exceptions import ValidationError
@@ -16,7 +17,7 @@ from django.views.generic import (View,
                                   DeleteView)
 from django.urls import reverse_lazy, resolve
 
-from .models import Post, Category, Subscription
+from .models import Post, Category, Subscription, Comment
 
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
@@ -24,9 +25,9 @@ from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-# Blog app imports.
-from blog.token import account_activation_token
-from blog.forms.account.register_forms import UserRegisterForm
+# # Blog app imports.
+# from post_board.token import account_activation_token
+# from post_board.forms.account.register_forms import UserRegisterForm
 
 from .filters import BoardFilter
 from .forms import PostForm, CommentForm
@@ -40,10 +41,11 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import redirect, get_object_or_404
 
 
-# Blog app imports
-from blog.forms.account.login_forms import UserLoginForm
+# # Blog app imports
+# from blog.forms.account.login_forms import UserLoginForm
 
 
 def index(request):
@@ -67,7 +69,6 @@ class BoardList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filterset'] = self.filterset
         return context
 
 
@@ -100,7 +101,10 @@ class BoardCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'Танки'
-
+        user = self.request.user
+        if not user:
+            return redirect('post_board:index') #TODO 404 ошибку сделать
+        post.author = user
         post.save()
         news_notification.apply_async([post.pk], countdown=1)
         return super().form_valid(form)
@@ -119,33 +123,26 @@ class BoardDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('post_board:index')
 
 
-@login_required
-@csrf_protect
-def subscriptions(request, pk):
-    """
-    subscriptions
-    """
-    print(pk)
-    if request.method == 'POST':
-        category_id = request.POST.get('category_id')
-        category = Category.objects.get(id=category_id)
-        action = request.POST.get('action')
-        if action == 'subscribe':
-            Subscription.objects.create(user=request.user, category=category)
-        elif action == 'unsubscribe':
-            Subscription.objects.filter(
-                user=request.user,
-                category=category,
-            ).delete()
-    categories_with_subscriptions = Category.objects.annotate(
-        user_subscribed=Exists(
-            Subscription.objects.filter(
-                user=request.user,
-                category=OuterRef('pk'),
-            )
-        )
-    ).order_by('name')
-    return render(
-        request,
-        'news/subscriptions.html',
-        {'categories': categories_with_subscriptions},)
+
+def wait_comment(request, pk):
+    obj = get_object_or_404(Comment, pk=pk)
+    obj.status = 'Waiting'
+    obj.save()
+    return HttpResponseRedirect(reverse_lazy('post_board:index'))
+
+
+def decline_comment(request, pk):
+    obj = get_object_or_404(Comment, pk=pk)
+    obj.status = 'Decline'
+    obj.save()
+    return HttpResponseRedirect(reverse_lazy('post_board:index'))
+
+
+def approved_comment(request, pk):
+    obj = get_object_or_404(Comment, pk=pk)
+    obj.status = 'Approved'
+    obj.save()
+    return HttpResponseRedirect(reverse_lazy('post_board:index'))
+
+
+
