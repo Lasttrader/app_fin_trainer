@@ -22,30 +22,7 @@ class Category(models.Model):
 
 class Post(models.Model):  # post
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    TANKS = 'Танки'
-    HILLS = 'Хилы'
-    DD = 'ДД'
-    TORG = 'Торговцы'
-    GILD = 'Гилдмастеры'
-    KVEST = 'Квестгиверы'
-    KUZNETS = 'Кузнецы'
-    KOZHEV = 'Кожевники'
-    ZELVAR = 'Зельевары'
-    MASTERS = 'Мастера заклинаний'
-    CATEGORY_CHOICES = (
-        (TANKS, 'Танки'),
-        (HILLS, 'Хилы'),
-        (DD, 'ДД'),
-        (TORG, 'Торговцы'),
-        (GILD, 'Гилдмастеры'),
-        (KVEST, 'Квестгиверы'),
-        (KUZNETS, 'Кузнецы'),
-        (KOZHEV, 'Кожевники'),
-        (ZELVAR, 'Зельевары'),
-        (MASTERS, 'Мастера заклинаний')
-    )
-    categoryType = models.CharField(
-        max_length=20, choices=CATEGORY_CHOICES, default=TANKS)
+    categoryType = models.ForeignKey(Category, on_delete=models.CASCADE)
     dateCreation = models.DateTimeField(auto_now_add=True)
     # связь many2many с классом PostCategory
     postTitle = models.CharField(max_length=255)
@@ -83,8 +60,9 @@ class Comment(models.Model):
         ('Decline', 'Decline'),
         ('Approved', 'Approved'),
         ('Waiting', 'Waiting')
-        )
-    status = models.CharField(max_length=20, choices=STATUSES_CHOICES, default='Waiting')
+    )
+    status = models.CharField(
+        max_length=20, choices=STATUSES_CHOICES, default='Waiting')
 
     def __str__(self):
         return self.commentText

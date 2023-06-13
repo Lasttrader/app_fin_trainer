@@ -13,11 +13,13 @@ class PostForm(forms.ModelForm):
             'upload',
         ]
 
+
 class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
         fields = ('commentText',)
+
 
 class PostUpdateForm(forms.ModelForm):
     class Meta:

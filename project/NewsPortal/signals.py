@@ -15,24 +15,24 @@ from .models import Post, PostCategory
 #     msg.attach_alternative(html_content, "text/html")
 #     msg.send()
 
-@receiver(m2m_changed, sender=Comment)
+
+@receiver(m2m_changed, sender=PostCategory)
 def post_created(sender, instance, **kwargs):
     if kwargs['action'] == "post_add":
         categories = instance.postCategory.all()
-        #print(categories)
+        # print(categories)
         subscribers: list[str] = []
         for category in categories:
-            subscribers +=category.subscribers.all()
-        subscribers = [s.email for s in subscribers]   
-        #print(subscribers)
+            subscribers += category.subscribers.all()
+        subscribers = [s.email for s in subscribers]
+        # print(subscribers)
         users = User.objects.all()
         for u in users:
             html_content = (
                 f'Новость: {instance.postTitle}<br>'
                 f'<a href="http://127.0.0.1{instance.get_absolute_url()}">'
                 f'Ссылка на пост</a>')
-            msg = EmailMultiAlternatives(subject = instance.postTitle, body = '', from_email = DEFAULT_FROM_EMAIL, to = [u.email])
+            msg = EmailMultiAlternatives(
+                subject=instance.postTitle, body='', from_email=DEFAULT_FROM_EMAIL, to=[u.email])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
-
-

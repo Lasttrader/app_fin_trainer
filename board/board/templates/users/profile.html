@@ -32,6 +32,7 @@
     </div>
 </div>
 
+
 <div class="container">
     <div class="row mt-5 pt-3">
         <div class="col-md-6 offset-md-3">
@@ -72,17 +73,15 @@
                                 <div class="col-md-9">
                                     {{ comment.commentText }}
                                     {{ comment.status }}
-                                    {{ comment.commentId }}
-                                    {{ comment.pk }}
                                 </div>
                                 <form method="post" action="{% url 'post_board:decline' comment.pk %}">
                                     {% csrf_token %}
-                                    <button type="submit"
-                                        class="btn btn-primary mx-2 float-right btn-sm">Отклонить</button>
+                                    <button type="submit" class="btn btn-danger float-right btn-sm">Отклонить</button>
                                 </form>
                                 <form method="post" action="{% url 'post_board:approved' comment.pk %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger float-right btn-sm">Подтвердить</button>
+                                    <button type="submit"
+                                        class="btn btn-primary mx-2 float-right btn-sm">Подтвердить</button>
                                 </form>
                             </div>
                             <hr>

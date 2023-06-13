@@ -15,15 +15,6 @@ class BoardFilter(FilterSet):
         label='Category',
         conjoined=True)
 
-    added_after = DateTimeFilter(
-        field_name='dateCreation',  # поле
-        lookup_expr='gt',  # условие
-        # собираем виджет
-        widget=DateTimeInput(
-            format='%Y-%m-%dT%H:%M',
-            attrs={'type': 'datetime-local'},
-        ))
-
     class Meta:
         # В Meta классе мы должны указать Django модель,
         # в которой будем фильтровать записи.

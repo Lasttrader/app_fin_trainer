@@ -3424,3 +3424,12 @@ django.template.exceptions.TemplateDoesNotExist: swagger-ui.html
 2023-04-13 10:42:13,258 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/models.py changed, reloading.
 2023-04-13 10:42:14,627 INFO Watching for file changes with StatReloader
 2023-04-13 10:44:58,918 INFO Watching for file changes with StatReloader
+2023-06-13 04:12:33,079 INFO Watching for file changes with StatReloader
+2023-06-13 04:13:17,617 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/signals.py changed, reloading.
+2023-06-13 04:13:18,356 INFO Watching for file changes with StatReloader
+2023-06-13 04:13:54,089 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/signals.py changed, reloading.
+2023-06-13 04:13:54,930 INFO Watching for file changes with StatReloader
+2023-06-13 04:13:58,635 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/signals.py changed, reloading.
+2023-06-13 04:13:59,449 INFO Watching for file changes with StatReloader
+2023-06-13 04:14:27,298 INFO /mnt/d/Documents/_ml/Projects/GitHub/app_fin_trainer/project/NewsPortal/signals.py changed, reloading.
+2023-06-13 04:14:28,687 INFO Watching for file changes with StatReloader

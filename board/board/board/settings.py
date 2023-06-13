@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.admin',  # поддержка авторизации
+    'django.contrib.auth',  # доступ к view только для зарегистрированных пользователей
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',

@@ -31,7 +31,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .filters import BoardFilter
 from .forms import PostForm, CommentForm
-from .tasks import news_notification
 
 from functools import reduce
 import operator
@@ -100,13 +99,11 @@ class BoardCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.categoryType = 'Танки'
         user = self.request.user
         if not user:
-            return redirect('post_board:index') #TODO 404 ошибку сделать
+            return redirect('users:index')  # TODO 404 ошибку сделать
         post.author = user
         post.save()
-        news_notification.apply_async([post.pk], countdown=1)
         return super().form_valid(form)
 
 
@@ -120,29 +117,25 @@ class BoardDelete(LoginRequiredMixin, DeleteView):
     permission_required = ('post_board.change_post')
     model = Post
     template_name = 'board/board_delete.html'
-    success_url = reverse_lazy('post_board:index')
-
+    success_url = reverse_lazy('users:users-profile')
 
 
 def wait_comment(request, pk):
     obj = get_object_or_404(Comment, pk=pk)
     obj.status = 'Waiting'
     obj.save()
-    return HttpResponseRedirect(reverse_lazy('post_board:index'))
+    return HttpResponseRedirect(reverse_lazy('users:users-profile'))
 
 
 def decline_comment(request, pk):
     obj = get_object_or_404(Comment, pk=pk)
     obj.status = 'Decline'
     obj.save()
-    return HttpResponseRedirect(reverse_lazy('post_board:index'))
+    return HttpResponseRedirect(reverse_lazy('users:users-profile'))
 
 
 def approved_comment(request, pk):
     obj = get_object_or_404(Comment, pk=pk)
     obj.status = 'Approved'
     obj.save()
-    return HttpResponseRedirect(reverse_lazy('post_board:index'))
-
-
-
+    return HttpResponseRedirect(reverse_lazy('users:users-profile'))
