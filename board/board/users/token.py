@@ -2,6 +2,8 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils import six
 
 
+# функция кторое генерирует число
+# привязать к регистрации - вызвать функцию - записать в БД (в модель токен) -
 class TokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         return (

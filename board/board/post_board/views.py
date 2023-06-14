@@ -131,6 +131,7 @@ def decline_comment(request, pk):
     obj = get_object_or_404(Comment, pk=pk)
     obj.status = 'Decline'
     obj.save()
+    # task
     return HttpResponseRedirect(reverse_lazy('users:users-profile'))
 
 

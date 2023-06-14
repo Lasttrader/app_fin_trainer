@@ -53,23 +53,25 @@ def profile(request):
     if request.method == 'GET':
         posts = Post.objects.filter(author=request.user)
         comments = Comment.objects.all()
+        user = ProfileModel.objects.get(user=request.user)
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST or None, instance=request.user)
         # p_form = ProfileUpdateForm(
-        #     request.POST or None, request.FILES or None, instance=request.user.profilemodel)
+        # request.POST or None, request.FILES or None, instance=request.user.profilemodel)
         if u_form.is_valid():  # and p_form.is_valid():
             u_form.save()
             # p_form.save()
             return redirect('users:users-profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
-       # p_form = ProfileUpdateForm(instance=request.user.profilemodel)
+        # p_form = ProfileUpdateForm(instance=request.user.profilemodel)
     # передаем контектс
     context = {
         'u_form': u_form,
         # 'p_form': p_form,
         'posts': posts,
         'comments': comments,
+        'profile': user,
     }
 
     return render(request, 'users/profile.html', context)
